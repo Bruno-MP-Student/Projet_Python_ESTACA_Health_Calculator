@@ -1,0 +1,13 @@
+[tool.sphinx]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+]
+
+[build-system]
+requires = [
+    "sphinx",
+    "sphinx_rtd_theme",
+]
+build-backend = "sphinx.build"
