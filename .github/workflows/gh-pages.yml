@@ -1,0 +1,39 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # La branche sur laquelle vous allez pousser les modifications
+    # Vous pouvez ajouter d'autres événements ici si vous le souhaitez
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Le système sur lequel le workflow va être exécuté
+
+    steps:
+      # Étape 1: Vérifier le code source
+      - name: Checkout code
+        uses: actions/checkout@v3  # Action pour récupérer le code du dépôt
+
+      # Étape 2: Installer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Choisissez la version Python que vous souhaitez utiliser
+
+      # Étape 3: Installer les dépendances
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # Mise à jour de pip
+          pip install sphinx sphinx_rtd_theme  # Installation de Sphinx et du thème ReadTheDocs
+
+      # Étape 4: Construire la documentation avec Sphinx
+      - name: Build the documentation
+        run: sphinx-build -b html docs/ docs/_build/html  # Construction de la documentation dans docs/_build/html
+
+      # Étape 5: Déployer sur GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Utilisation du token GitHub pour l'authentification
+          publish_dir: docs/_build/html  # Dossier à publier
